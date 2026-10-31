@@ -1,0 +1,28 @@
+{
+  "name": "ecommerceprojectrelation",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Md Hanif",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./node_modules/nodemon/bin/nodemon.js index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.4",
+    "express": "^5.2.1",
+    "init": "^0.1.2",
+    "mongodb": "^7.7.0",
+    "mongoose": "^9.10.2",
+    "multer": "^2.4.0",
+    "nodemon": "^3.1.14",
+    "read-excel-file": "^9.3.12",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
+    "xlsx": "^0.18.5"
+  }
+}
