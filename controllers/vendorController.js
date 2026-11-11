@@ -87,6 +87,7 @@ let getAllSubCategory = async (req,res)=>{
       data: subcategory
   })
 }
+// get all category under one owner
 let getAllOwnerWiseCategory = async (req,res) => {
   let {id}= req.params
   let allOwnerWiseCategory = await mypromise(id)

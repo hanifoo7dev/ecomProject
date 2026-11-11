@@ -53,7 +53,7 @@ const schema = {
 
 // create product with images
 let createPorduct = async(req,res)=>{
-   let{title, description,shortDescription,price,discountPrice,isMain,category,subCategory,owner}= req.body
+   let{title, description,shortDescription,price,stock,discountPrice,isMain,category,subCategory,owner}= req.body
   
   // if (!title?.trim() ||!description?.trim() ||!shortDescription?.trim() || price === undefined || price === '' || discountPrice === undefined || discountPrice === '' || !isMain?.trim()){
   //      return res.status(400).json({
@@ -98,6 +98,7 @@ let product = new Product({
    description: description,
    shortDescription: shortDescription,
    price: price,
+   stock: stock,
    slug: slug,
    sku: sku,
    images: images,
@@ -113,7 +114,7 @@ res.status(201).json({
     product: product
 })
 }
-// get All product 
+// get All product & and need to update.
 let getAllProduct = async (req,res)=>{
 let product = await Product.find({}).populate('category').populate('subCategory').populate('owner','-password')
 res.status(200).json({
@@ -122,7 +123,6 @@ res.status(200).json({
   product: product
 })
 }
-
 // get singla product
 const getSingleProducts = async (req, res) => {
         const { id } = req.params
@@ -198,7 +198,6 @@ const getProductsBySubCategory = async (req, res) => {
       products
     });
   }
-
 // upload data from excel
 const bulkProducrUpload = async (req, res) => {
   try {
@@ -287,7 +286,6 @@ const exportProductsExcel = async (req, res) => {
     });
   }
 };
-
 // update product with image and ismain  //sku and slug is not allow to update
 let updateProduct = async(req,res)=>{
   let {id} = req.params
@@ -397,9 +395,21 @@ let deleteMultipleImages = async (req, res) => {
       images: existingProduct.images
     })
 }
+// get single product 
+let getSingleProduct = async (req, res) => {
+    let  { slug } = req.params;
+    let product = await Product.findOne({ slug: slug }).populate('category subCategory owner'); 
+    res.status(200).json({
+      success: true,
+      message: "Product fetched successfully",
+      product: product
+    });   
+}
 
 
 
 
 
-module.exports={createPorduct,getAllProduct,getSingleProducts,getProductsByOwner,getProductsByCategory,getProductsBySubCategory,deleteProduct,bulkProducrUpload,exportProductsExcel,updateProduct,deleteMultipleImages}
+
+
+module.exports={createPorduct,getAllProduct,getSingleProducts,getProductsByOwner,getProductsByCategory,getProductsBySubCategory,deleteProduct,bulkProducrUpload,exportProductsExcel,updateProduct,deleteMultipleImages,getSingleProduct}
