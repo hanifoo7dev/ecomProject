@@ -3,6 +3,7 @@ const _ = express.Router()
 const { createCategory, getAllCategory, createSubCategory, getAllSubCategory, getAllCategoryWiseSubCategory, getAllOwnerWiseCategory } = require('../controllers/vendorController')
 const {createPorduct,getAllProduct,getSingleProducts,getProductsByOwner,getProductsByCategory,getProductsBySubCategory,deleteProduct,bulkProducrUpload,exportProductsExcel,updateProduct,deleteMultipleImages,getSingleProduct}= require('../controllers/productController')
 const multer = require('multer')
+const { createCoupon } = require('../controllers/couponController')
 
 // image uploaded
 const storage = multer.diskStorage({
@@ -970,6 +971,10 @@ _.get('/subcategory/:subcategoryId/',getProductsBySubCategory)
  */
 _.delete('/:productId',deleteProduct)
 
+
+// coupon
+
+_.post('/create/coupon',createCoupon)
 
 
 

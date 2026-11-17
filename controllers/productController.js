@@ -4,6 +4,7 @@ const { readSheet }= require('read-excel-file/node')
 const XLSX = require("xlsx");
 
 
+
 const schema = {
   title: {
     column: 'title',
@@ -53,7 +54,7 @@ const schema = {
 
 // create product with images
 let createPorduct = async(req,res)=>{
-   let{title, description,shortDescription,price,stock,discountPrice,isMain,category,subCategory,owner}= req.body
+   let{title, description,shortDescription,price,discountType,stock,discountPrice,startDate,endDate,isMain,category,subCategory,owner}= req.body
   
   // if (!title?.trim() ||!description?.trim() ||!shortDescription?.trim() || price === undefined || price === '' || discountPrice === undefined || discountPrice === '' || !isMain?.trim()){
   //      return res.status(400).json({
@@ -65,9 +66,38 @@ let createPorduct = async(req,res)=>{
     const files = Array.isArray(req.files) ? req.files : [];
   // to see image  
   // console.log(req.files);
+  if(discountType && discountPrice && startDate && endDate){
+    let currentDate = new Date();
+     let discountStart = new Date(startDate);
+     let discountEnd = new Date(endDate);
+  // Check discount validity date
+  if (currentDate < discountStart || currentDate > discountEnd) {
+    return res.status(400).json({
+      success: false,
+      message: 'Discount is not valid at this date or time'
+    });
+  }
+
+    if(discountType === 'percent'){
+      let afterDiscount =  (price * discountPrice) / 100
+      if(afterDiscount >= price){
+        return res.status(400).json({
+          success: false,
+          message: 'Discount price cannot be greater than or equal to the original price'
+        });
+      }
+    }else{
+      if(discountPrice >= price){
+        return res.status(400).json({
+          success: false,
+          message: 'Discount price cannot be greater than or equal to the original price'
+        });
+      }
+    }
+  }
 
   let images = []
-  req.files.map((item,index)=>{
+  req.files?.map((item,index)=>{
      images.push({
       url: item.path,
       isMain: index == isMain ? true :false
@@ -98,6 +128,9 @@ let product = new Product({
    description: description,
    shortDescription: shortDescription,
    price: price,
+   discountType: discountType,
+   startDate: startDate,
+   endDate: endDate,  
    stock: stock,
    slug: slug,
    sku: sku,

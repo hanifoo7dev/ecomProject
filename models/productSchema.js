@@ -40,9 +40,20 @@ const productSchema = new Schema({
         }
     }
  ],
+ discountType: {
+    type: String,
+    enum: ['percent', 'fixed'],
+ },
  discountPrice: {
     type: Number,
  },
+ startDate: {
+  type: Date,
+},
+
+endDate: {
+  type: Date,
+},
  stock: {
     type: Number,
  },
